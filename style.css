@@ -14,7 +14,9 @@ body {
   margin-top: 150px;
 }
 
-button#numSquaresSubmit {
+button#numSquaresSubmit,
+.changeColor button,
+.changeBackgroundColor button {
   display: inline;
 }
 

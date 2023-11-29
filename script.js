@@ -40,12 +40,40 @@ function addDrawMode(mode) {
 
 function addColor(e) {
   if (color == "random") {
+    e.target.style.backgroundColor =
+      "#" + Math.floor(Math.random() * 16777215).toString(16);
   } else {
     e.target.style.backgroundColor = color;
   }
 }
 
-function handleNewColorMode() {}
+function handleNewColorMode() {
+  const colorPicker = document.querySelector(".changeColor input");
+  const colorSubmit = document.querySelector(".changeColor button");
+  colorSubmit.addEventListener("click", () => {
+    color = colorPicker.value;
+  });
+}
+
+function handleNewBackgroundColor() {
+  const colorPicker = document.querySelector(".changeBackgroundColor input");
+  const colorSubmit = document.querySelector(".changeBackgroundColor button");
+  const grid = document.querySelector(".grid");
+  colorSubmit.addEventListener("click", () => {
+    grid.style.backgroundColor = colorPicker.value;
+  });
+}
+
+function handleRandomColor() {
+  const colorSubmit = document.querySelector("#random");
+  colorSubmit.addEventListener("click", () => {
+    color = "random";
+  });
+}
+
+function getRandomValue() {
+  return Math.floor(Math.random() * 255);
+}
 
 function handleNewDrawMode() {}
 
@@ -53,8 +81,11 @@ function startJavascript() {
   addSquares(60, 16);
   addDrawMode("mouseover");
   handleNewGridSize();
+  handleNewColorMode();
+  handleNewBackgroundColor();
+  handleRandomColor();
 }
 
-let color = "blue";
+let color = "black";
 
 startJavascript();
