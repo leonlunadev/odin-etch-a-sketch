@@ -71,6 +71,21 @@ function handleRandomColor() {
   });
 }
 
+function handleEraser() {
+  const eraser = document.querySelector("#eraser");
+  const backgroundColor = document.querySelector(".grid").style.backgroundColor;
+  eraser.addEventListener("click", () => {
+    color = backgroundColor;
+  });
+}
+
+function handleClear() {
+  const clear = document.querySelector("#clear");
+  clear.addEventListener("click", () => {
+    location.reload();
+  });
+}
+
 function getRandomValue() {
   return Math.floor(Math.random() * 255);
 }
@@ -84,6 +99,8 @@ function startJavascript() {
   handleNewColorMode();
   handleNewBackgroundColor();
   handleRandomColor();
+  handleEraser();
+  handleClear();
 }
 
 let color = "black";
