@@ -25,3 +25,16 @@ change number of sqaures needed
 
 change width and height in sqaure class
 change iterators in javascript
+
+add hover and press and black coloring options
+on hover or on press
+
+add event listeners
+
+html options:
+
+color picker
+
+random color
+
+darkening colors
