@@ -1,4 +1,4 @@
-let color = "black";
+let color = "rgba(0,0,0,1)";
 let drawMode = "Hover";
 let mousedown = false;
 
@@ -19,6 +19,7 @@ function listen() {
   listenForNewBackgroundColor();
   listenForEraser();
   listenForClear();
+  listenForBorderToggle();
 }
 
 function listenForNewNumSquares() {
@@ -93,6 +94,12 @@ function removeEventListeners() {
       square.removeEventListener("mouseover", addColor);
     });
   } else {
+    const listeners = document.querySelectorAll(".grid div");
+    listeners.forEach((square) => {
+      square.removeEventListener("mousedown", () => {});
+      square.removeEventListener("mouseenter", addColor);
+      square.removeEventListener("mouseup", () => {});
+    });
   }
 }
 
@@ -163,5 +170,23 @@ function listenForClear() {
     squares.forEach((square) => {
       square.style.backgroundColor = backgroundColor;
     });
+  });
+}
+
+function listenForBorderToggle() {
+  const border = document.querySelector("#border");
+  const squares = document.querySelectorAll(".grid div");
+  border.addEventListener("click", (e) => {
+    if (e.target.textContent == "Remove Border") {
+      squares.forEach((square) => {
+        square.style.border = "none";
+      });
+      e.target.textContent = "Add Border";
+    } else {
+      squares.forEach((square) => {
+        square.style.border = "1px solid black";
+      });
+      e.target.textContent = "Remove Border";
+    }
   });
 }
