@@ -43,3 +43,14 @@ label {
   width: 960px;
   height: 960px;
 }
+
+.changeBackgroundColor {
+  justify-content: space-between;
+  display: flex;
+}
+
+.changeColor {
+  display: flex;
+
+  justify-content: space-between;
+}

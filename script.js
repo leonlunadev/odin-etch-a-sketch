@@ -1,3 +1,19 @@
+let color = "black";
+
+startJavascript();
+
+function startJavascript() {
+  addSquares(60, 16);
+  addDrawMode("mouseover");
+  handleNewGridSize();
+  handleNewColorMode();
+  handleNewBackgroundColor();
+  handleRandomColor();
+  handleEraser();
+  handleClear();
+  handleNewDrawMode();
+}
+
 function addSquares(squareLength, numSquares) {
   for (let i = 0; i < numSquares * numSquares; i++) {
     const square = document.createElement("div");
@@ -6,6 +22,22 @@ function addSquares(squareLength, numSquares) {
     grid.appendChild(square);
   }
   addDrawMode("mouseover");
+}
+
+function addDrawMode(mode) {
+  const squares = document.querySelectorAll(".grid div");
+  squares.forEach((square) => {
+    square.addEventListener(mode, addColor);
+  });
+}
+
+function addColor(e) {
+  if (color == "random") {
+    e.target.style.backgroundColor =
+      "#" + Math.floor(Math.random() * 16777215).toString(16);
+  } else {
+    e.target.style.backgroundColor = color;
+  }
 }
 
 function clearSquares() {
@@ -27,24 +59,6 @@ function adjustNumSquares(e) {
   const newSquareLength = 960 / newNumSquares;
   clearSquares();
   addSquares(newSquareLength, newNumSquares);
-}
-
-function removeDrawListener() {}
-
-function addDrawMode(mode) {
-  const squares = document.querySelectorAll(".grid div");
-  squares.forEach((square) => {
-    square.addEventListener(mode, addColor);
-  });
-}
-
-function addColor(e) {
-  if (color == "random") {
-    e.target.style.backgroundColor =
-      "#" + Math.floor(Math.random() * 16777215).toString(16);
-  } else {
-    e.target.style.backgroundColor = color;
-  }
 }
 
 function handleNewColorMode() {
@@ -90,19 +104,17 @@ function getRandomValue() {
   return Math.floor(Math.random() * 255);
 }
 
-function handleNewDrawMode() {}
-
-function startJavascript() {
-  addSquares(60, 16);
-  addDrawMode("mouseover");
-  handleNewGridSize();
-  handleNewColorMode();
-  handleNewBackgroundColor();
-  handleRandomColor();
-  handleEraser();
-  handleClear();
+function handleNewDrawMode() {
+  const drawMode = document.querySelector("#drawMode");
+  drawMode.addEventListener("click", changeDrawMode);
 }
 
-let color = "black";
+function changeDrawMode(e) {
+  if (e.target.textContent == "Hover") {
+    e.target.textContent = "Press";
+  } else {
+    e.target.textContent = "Hover";
+  }
+}
 
-startJavascript();
+function removeDrawListener() {}
