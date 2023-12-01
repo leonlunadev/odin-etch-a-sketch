@@ -1,56 +1,44 @@
 let color = "black";
+let drawMode = "Hover";
+let mousedown = false;
 
-startJavascript();
+main();
 
-function startJavascript() {
+function main() {
   addSquares(60, 16);
-  addDrawMode("mouseover");
-  handleNewGridSize();
-  handleNewColorMode();
-  handleNewBackgroundColor();
-  handleRandomColor();
-  handleEraser();
-  handleClear();
-  handleNewDrawMode();
+  addDrawMode();
+  listen();
 }
 
-function addSquares(squareLength, numSquares) {
-  for (let i = 0; i < numSquares * numSquares; i++) {
-    const square = document.createElement("div");
-    square.style.cssText = `width: ${squareLength}px; height: ${squareLength}px; border: solid black 1px;`;
-    const grid = document.querySelector(".grid");
-    grid.appendChild(square);
-  }
-  addDrawMode("mouseover");
+function listen() {
+  listenForNewNumSquares();
+  listenForNewDrawMode();
+  listenForDrawEvent();
+  listenForNewColor();
+  listenForRandomColor();
+  listenForNewBackgroundColor();
+  listenForEraser();
+  listenForClear();
 }
 
-function addDrawMode(mode) {
-  const squares = document.querySelectorAll(".grid div");
-  squares.forEach((square) => {
-    square.addEventListener(mode, addColor);
-  });
-}
-
-function addColor(e) {
-  if (color == "random") {
-    e.target.style.backgroundColor =
-      "#" + Math.floor(Math.random() * 16777215).toString(16);
-  } else {
-    e.target.style.backgroundColor = color;
-  }
-}
-
-function clearSquares() {
-  const squares = document.querySelectorAll(".grid div");
-  squares.forEach((square) => {
-    square.remove();
-  });
-}
-
-function handleNewGridSize() {
+function listenForNewNumSquares() {
   const gridEvent = document.querySelector("#numSquaresSubmit");
   gridEvent.addEventListener("click", adjustNumSquares);
 }
+
+function listenForNewDrawMode() {
+  const drawModeListener = document.querySelector("#drawMode");
+  drawModeListener.addEventListener("click", (e) => {
+    const newButtonLabel = drawMode;
+    drawMode = e.target.textContent;
+    e.target.textContent = newButtonLabel;
+    addDrawMode();
+  });
+}
+
+function listenForDrawEvent() {}
+
+function listenForNewColor() {}
 
 function adjustNumSquares(e) {
   const input = document.querySelector("#numSquares");
@@ -61,7 +49,81 @@ function adjustNumSquares(e) {
   addSquares(newSquareLength, newNumSquares);
 }
 
-function handleNewColorMode() {
+function addSquares(squareLength, numSquares) {
+  for (let i = 0; i < numSquares * numSquares; i++) {
+    const square = document.createElement("div");
+    square.style.cssText = `width: ${squareLength}px; height: ${squareLength}px; border: solid black 1px;`;
+    const grid = document.querySelector(".grid");
+    grid.appendChild(square);
+  }
+  addDrawMode();
+}
+
+function addDrawMode(mode) {
+  removeEventListeners();
+  if (drawMode == "Hover") {
+    const squares = document.querySelectorAll(".grid div");
+    squares.forEach((square) => {
+      square.addEventListener("mouseover", addColor);
+    });
+  } else {
+    const squares = document.querySelectorAll(".grid div");
+    squares.forEach((square) => {
+      square.addEventListener("mousedown", (e) => {
+        mousedown = true;
+        if (color == "random") {
+          e.target.style.backgroundColor =
+            "#" + Math.floor(Math.random() * 16777215).toString(16);
+        } else {
+          e.target.style.backgroundColor = color;
+        }
+      });
+      square.addEventListener("mouseenter", addColor);
+      square.addEventListener("mouseup", () => {
+        mousedown = false;
+      });
+    });
+  }
+}
+
+function removeEventListeners() {
+  if (drawMode == "Press") {
+    const listeners = document.querySelectorAll(".grid div");
+    listeners.forEach((square) => {
+      square.removeEventListener("mouseover", addColor);
+    });
+  } else {
+  }
+}
+
+function addColor(e) {
+  if (drawMode == "Hover") {
+    if (color == "random") {
+      e.target.style.backgroundColor =
+        "#" + Math.floor(Math.random() * 16777215).toString(16);
+    } else {
+      e.target.style.backgroundColor = color;
+    }
+  } else {
+    if (mousedown) {
+      if (color == "random") {
+        e.target.style.backgroundColor =
+          "#" + Math.floor(Math.random() * 16777215).toString(16);
+      } else {
+        e.target.style.backgroundColor = color;
+      }
+    }
+  }
+}
+
+function clearSquares() {
+  const squares = document.querySelectorAll(".grid div");
+  squares.forEach((square) => {
+    square.remove();
+  });
+}
+
+function listenForNewColor() {
   const colorPicker = document.querySelector(".changeColor input");
   const colorSubmit = document.querySelector(".changeColor button");
   colorSubmit.addEventListener("click", () => {
@@ -69,7 +131,7 @@ function handleNewColorMode() {
   });
 }
 
-function handleNewBackgroundColor() {
+function listenForNewBackgroundColor() {
   const colorPicker = document.querySelector(".changeBackgroundColor input");
   const colorSubmit = document.querySelector(".changeBackgroundColor button");
   const grid = document.querySelector(".grid");
@@ -78,14 +140,14 @@ function handleNewBackgroundColor() {
   });
 }
 
-function handleRandomColor() {
+function listenForRandomColor() {
   const colorSubmit = document.querySelector("#random");
   colorSubmit.addEventListener("click", () => {
     color = "random";
   });
 }
 
-function handleEraser() {
+function listenForEraser() {
   const eraser = document.querySelector("#eraser");
   const backgroundColor = document.querySelector(".grid").style.backgroundColor;
   eraser.addEventListener("click", () => {
@@ -93,28 +155,13 @@ function handleEraser() {
   });
 }
 
-function handleClear() {
+function listenForClear() {
   const clear = document.querySelector("#clear");
+  const backgroundColor = document.querySelector(".grid").style.backgroundColor;
   clear.addEventListener("click", () => {
-    location.reload();
+    const squares = document.querySelectorAll(".grid div");
+    squares.forEach((square) => {
+      square.style.backgroundColor = backgroundColor;
+    });
   });
 }
-
-function getRandomValue() {
-  return Math.floor(Math.random() * 255);
-}
-
-function handleNewDrawMode() {
-  const drawMode = document.querySelector("#drawMode");
-  drawMode.addEventListener("click", changeDrawMode);
-}
-
-function changeDrawMode(e) {
-  if (e.target.textContent == "Hover") {
-    e.target.textContent = "Press";
-  } else {
-    e.target.textContent = "Hover";
-  }
-}
-
-function removeDrawListener() {}
