@@ -1,16 +1,13 @@
 let color = "rgba(0,0,0,1)";
 let drawMode = "Hover";
 let mousedown = false;
+let darkening = false;
 
 main();
 
 function main() {
   addSquares(60, 16);
   addDrawMode();
-  listen();
-}
-
-function listen() {
   listenForNewNumSquares();
   listenForNewDrawMode();
   listenForDrawEvent();
@@ -20,10 +17,12 @@ function listen() {
   listenForEraser();
   listenForClear();
   listenForBorderToggle();
+  listenForDarkening();
 }
 
 function listenForNewNumSquares() {
   const gridEvent = document.querySelector("#numSquaresSubmit");
+
   gridEvent.addEventListener("click", adjustNumSquares);
 }
 
@@ -42,6 +41,7 @@ function listenForDrawEvent() {}
 function listenForNewColor() {}
 
 function adjustNumSquares(e) {
+  location.reload();
   const input = document.querySelector("#numSquares");
   const newNumSquares = Number(input.value);
   input.value = "";
@@ -104,22 +104,25 @@ function removeEventListeners() {
 }
 
 function addColor(e) {
-  if (drawMode == "Hover") {
-    if (color == "random") {
-      e.target.style.backgroundColor =
-        "#" + Math.floor(Math.random() * 16777215).toString(16);
-    } else {
-      e.target.style.backgroundColor = color;
-    }
-  } else {
-    if (mousedown) {
+  if (!darkening) {
+    if (drawMode == "Hover") {
       if (color == "random") {
         e.target.style.backgroundColor =
           "#" + Math.floor(Math.random() * 16777215).toString(16);
       } else {
         e.target.style.backgroundColor = color;
       }
+    } else {
+      if (mousedown) {
+        if (color == "random") {
+          e.target.style.backgroundColor =
+            "#" + Math.floor(Math.random() * 16777215).toString(16);
+        } else {
+          e.target.style.backgroundColor = color;
+        }
+      }
     }
+  } else {
   }
 }
 
@@ -135,6 +138,7 @@ function listenForNewColor() {
   const colorSubmit = document.querySelector(".changeColor button");
   colorSubmit.addEventListener("click", () => {
     color = colorPicker.value;
+    hexToRgb(color);
   });
 }
 
@@ -150,6 +154,7 @@ function listenForNewBackgroundColor() {
 function listenForRandomColor() {
   const colorSubmit = document.querySelector("#random");
   colorSubmit.addEventListener("click", () => {
+    darkening = false;
     color = "random";
   });
 }
@@ -189,4 +194,20 @@ function listenForBorderToggle() {
       e.target.textContent = "Remove Border";
     }
   });
+}
+
+function listenForDarkening() {
+  const darkeningButton = document.querySelector("#darkening");
+  darkeningButton.addEventListener("click", (e) => {
+    if (darkening) darkening = false;
+    else darkening = true;
+  });
+}
+
+function hexToRgb(hex) {
+  console.log(typeof hex);
+  const RR = hex[1] + hex[2];
+  const GG = hex[3] + hex[4];
+  const BB = hex[5] + hex[6];
+  return parseInt(RR, 16), parseInt(GG, 16), parseInt(BB, 16);
 }
