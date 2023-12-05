@@ -123,6 +123,23 @@ function addColor(e) {
       }
     }
   } else {
+    if (drawMode == "Hover") {
+      if (color == "random") {
+        e.target.style.backgroundColor =
+          "#" + Math.floor(Math.random() * 16777215).toString(16);
+      } else {
+        e.target.style.backgroundColor = color;
+      }
+    } else {
+      if (mousedown) {
+        if (color == "random") {
+          e.target.style.backgroundColor =
+            "#" + Math.floor(Math.random() * 16777215).toString(16);
+        } else {
+          e.target.style.backgroundColor = color;
+        }
+      }
+    }
   }
 }
 
