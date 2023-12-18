@@ -124,20 +124,12 @@ function addColor(e) {
     }
   } else {
     if (drawMode == "Hover") {
-      if (color == "random") {
-        e.target.style.backgroundColor =
-          "#" + Math.floor(Math.random() * 16777215).toString(16);
-      } else {
-        e.target.style.backgroundColor = color;
-      }
+      let currentColor = e.target.style.backgroundColor;
+      console.log(currentColor);
+      e.target.style.backgroundColor = "";
     } else {
       if (mousedown) {
-        if (color == "random") {
-          e.target.style.backgroundColor =
-            "#" + Math.floor(Math.random() * 16777215).toString(16);
-        } else {
-          e.target.style.backgroundColor = color;
-        }
+        e.target.style.backgroundColor = "";
       }
     }
   }
