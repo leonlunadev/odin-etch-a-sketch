@@ -49,6 +49,11 @@ label {
   background: rgb(255, 255, 255);
 }
 
+.changeNumSquares {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 .changeBackgroundColor {
   align-items: center;
   gap: 10px;
@@ -65,5 +70,11 @@ label {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  max-width: 300px;
+  flex-direction: column;
+  width: 300px;
+  gap: 50px;
+}
+
+.buttons div {
+  width: 100px;
 }

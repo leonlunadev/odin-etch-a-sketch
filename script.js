@@ -16,7 +16,6 @@ listenForBorderToggle();
 listenForDarkening();
 
 function adjustNumSquares(e) {
-  location.reload();
   const input = document.querySelector("#numSquares");
   const newNumSquares = Number(input.value);
   input.value = "";
@@ -103,6 +102,7 @@ function addColor(e) {
     } else {
       if (mousedown) {
         let currentColor = e.target.style.backgroundColor;
+        console.log(e.target);
         e.target.style.backgroundColor = getDarkerShade(currentColor);
       }
     }
@@ -163,8 +163,12 @@ function listenForNewBackgroundColor() {
   const colorPicker = document.querySelector(".changeBackgroundColor input");
   const colorSubmit = document.querySelector(".changeBackgroundColor button");
   const grid = document.querySelector(".grid");
+  const squares = document.querySelectorAll(".grid div");
   colorSubmit.addEventListener("click", () => {
     grid.style.backgroundColor = hexToRgb(colorPicker.value);
+    squares.forEach((square) => {
+      square.style.backgroundColor = hexToRgb(colorPicker.value);
+    });
   });
 }
 
@@ -186,10 +190,12 @@ function listenForEraser() {
 
 function listenForClear() {
   const clear = document.querySelector("#clear");
-  const backgroundColor = document.querySelector(".grid").style.backgroundColor;
+
   clear.addEventListener("click", () => {
     const squares = document.querySelectorAll(".grid div");
     squares.forEach((square) => {
+      const backgroundColor =
+        document.querySelector(".grid").style.backgroundColor;
       square.style.backgroundColor = backgroundColor;
     });
   });
