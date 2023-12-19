@@ -102,7 +102,6 @@ function addColor(e) {
     } else {
       if (mousedown) {
         let currentColor = e.target.style.backgroundColor;
-        console.log(e.target);
         e.target.style.backgroundColor = getDarkerShade(currentColor);
       }
     }
@@ -110,7 +109,6 @@ function addColor(e) {
 }
 
 function getDarkerShade(currentColor) {
-  console.log(currentColor);
   currentColor = currentColor.split(")");
   let strSplit = currentColor[0].split("(");
   let numbers = strSplit[1].split(",");
