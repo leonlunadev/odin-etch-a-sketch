@@ -1,44 +1,19 @@
-let color = "rgba(0,0,0,1)";
-let drawMode = "Hover";
+let color = "rgb(0,0,0)";
+let drawMode = "Press";
 let mousedown = false;
 let darkening = false;
 
-main();
-
-function main() {
-  addSquares(60, 16);
-  addDrawMode();
-  listenForNewNumSquares();
-  listenForNewDrawMode();
-  listenForDrawEvent();
-  listenForNewColor();
-  listenForRandomColor();
-  listenForNewBackgroundColor();
-  listenForEraser();
-  listenForClear();
-  listenForBorderToggle();
-  listenForDarkening();
-}
-
-function listenForNewNumSquares() {
-  const gridEvent = document.querySelector("#numSquaresSubmit");
-
-  gridEvent.addEventListener("click", adjustNumSquares);
-}
-
-function listenForNewDrawMode() {
-  const drawModeListener = document.querySelector("#drawMode");
-  drawModeListener.addEventListener("click", (e) => {
-    const newButtonLabel = drawMode;
-    drawMode = e.target.textContent;
-    e.target.textContent = newButtonLabel;
-    addDrawMode();
-  });
-}
-
-function listenForDrawEvent() {}
-
-function listenForNewColor() {}
+addSquares(60, 16);
+addDrawMode();
+listenForNewNumSquares();
+listenForNewDrawMode();
+listenForNewColor();
+listenForRandomColor();
+listenForNewBackgroundColor();
+listenForEraser();
+listenForClear();
+listenForBorderToggle();
+listenForDarkening();
 
 function adjustNumSquares(e) {
   location.reload();
@@ -53,38 +28,13 @@ function adjustNumSquares(e) {
 function addSquares(squareLength, numSquares) {
   for (let i = 0; i < numSquares * numSquares; i++) {
     const square = document.createElement("div");
-    square.style.cssText = `width: ${squareLength}px; height: ${squareLength}px; border: solid black 1px;`;
     const grid = document.querySelector(".grid");
+    const gridStyle = getComputedStyle(grid);
+    square.style.cssText = `width: ${squareLength}px; height: ${squareLength}px; border: solid black 1px; background-color: ${gridStyle.backgroundColor};`;
+
     grid.appendChild(square);
   }
   addDrawMode();
-}
-
-function addDrawMode(mode) {
-  removeEventListeners();
-  if (drawMode == "Hover") {
-    const squares = document.querySelectorAll(".grid div");
-    squares.forEach((square) => {
-      square.addEventListener("mouseover", addColor);
-    });
-  } else {
-    const squares = document.querySelectorAll(".grid div");
-    squares.forEach((square) => {
-      square.addEventListener("mousedown", (e) => {
-        mousedown = true;
-        if (color == "random") {
-          e.target.style.backgroundColor =
-            "#" + Math.floor(Math.random() * 16777215).toString(16);
-        } else {
-          e.target.style.backgroundColor = color;
-        }
-      });
-      square.addEventListener("mouseenter", addColor);
-      square.addEventListener("mouseup", () => {
-        mousedown = false;
-      });
-    });
-  }
 }
 
 function removeEventListeners() {
@@ -103,20 +53,44 @@ function removeEventListeners() {
   }
 }
 
+function addDrawMode(mode) {
+  removeEventListeners();
+  if (drawMode == "Hover") {
+    const squares = document.querySelectorAll(".grid div");
+    squares.forEach((square) => {
+      square.addEventListener("mouseover", addColor);
+    });
+  } else {
+    const squares = document.querySelectorAll(".grid div");
+    squares.forEach((square) => {
+      square.addEventListener("mousedown", (e) => {
+        mousedown = true;
+        addColor(e);
+      });
+      square.addEventListener("mouseenter", addColor);
+      square.addEventListener("mouseup", () => {
+        mousedown = false;
+      });
+    });
+  }
+}
+
 function addColor(e) {
   if (!darkening) {
     if (drawMode == "Hover") {
       if (color == "random") {
-        e.target.style.backgroundColor =
-          "#" + Math.floor(Math.random() * 16777215).toString(16);
+        e.target.style.backgroundColor = hexToRgb(
+          "#" + Math.floor(Math.random() * 16777215).toString(16)
+        );
       } else {
         e.target.style.backgroundColor = color;
       }
     } else {
       if (mousedown) {
         if (color == "random") {
-          e.target.style.backgroundColor =
-            "#" + Math.floor(Math.random() * 16777215).toString(16);
+          e.target.style.backgroundColor = hexToRgb(
+            "#" + Math.floor(Math.random() * 16777215).toString(16)
+          );
         } else {
           e.target.style.backgroundColor = color;
         }
@@ -125,14 +99,34 @@ function addColor(e) {
   } else {
     if (drawMode == "Hover") {
       let currentColor = e.target.style.backgroundColor;
-      console.log(currentColor);
-      e.target.style.backgroundColor = "";
+      e.target.style.backgroundColor = getDarkerShade(currentColor);
     } else {
       if (mousedown) {
-        e.target.style.backgroundColor = "";
+        let currentColor = e.target.style.backgroundColor;
+        e.target.style.backgroundColor = getDarkerShade(currentColor);
       }
     }
   }
+}
+
+function getDarkerShade(currentColor) {
+  console.log(currentColor);
+  currentColor = currentColor.split(")");
+  let strSplit = currentColor[0].split("(");
+  let numbers = strSplit[1].split(",");
+  let red = Number(numbers[0]);
+  let green = Number(numbers[1]);
+  let blue = Number(numbers[2]);
+  if (red != 0) red = incrementShade(red);
+  if (blue != 0) blue = incrementShade(blue);
+  if (green != 0) green = incrementShade(green);
+  return `rgb(${red},${green},${blue})`;
+}
+
+function incrementShade(color) {
+  color = color - 25;
+  color = Math.max(color, 0);
+  return color;
 }
 
 function clearSquares() {
@@ -142,12 +136,26 @@ function clearSquares() {
   });
 }
 
+function listenForNewNumSquares() {
+  const gridEvent = document.querySelector("#numSquaresSubmit");
+  gridEvent.addEventListener("click", adjustNumSquares);
+}
+
+function listenForNewDrawMode() {
+  const drawModeListener = document.querySelector("#drawMode");
+  drawModeListener.addEventListener("click", (e) => {
+    const newButtonLabel = drawMode;
+    drawMode = e.target.textContent;
+    e.target.textContent = newButtonLabel;
+    addDrawMode();
+  });
+}
+
 function listenForNewColor() {
   const colorPicker = document.querySelector(".changeColor input");
   const colorSubmit = document.querySelector(".changeColor button");
   colorSubmit.addEventListener("click", () => {
-    color = colorPicker.value;
-    hexToRgb(color);
+    color = hexToRgb(colorPicker.value);
   });
 }
 
@@ -156,7 +164,7 @@ function listenForNewBackgroundColor() {
   const colorSubmit = document.querySelector(".changeBackgroundColor button");
   const grid = document.querySelector(".grid");
   colorSubmit.addEventListener("click", () => {
-    grid.style.backgroundColor = colorPicker.value;
+    grid.style.backgroundColor = hexToRgb(colorPicker.value);
   });
 }
 
@@ -208,15 +216,19 @@ function listenForBorderToggle() {
 function listenForDarkening() {
   const darkeningButton = document.querySelector("#darkening");
   darkeningButton.addEventListener("click", (e) => {
-    if (darkening) darkening = false;
-    else darkening = true;
+    if (darkening) {
+      darkening = false;
+      darkeningButton.style.backgroundColor = "white";
+    } else {
+      darkeningButton.style.cssText = "background-color: grey;";
+      darkening = true;
+    }
   });
 }
 
 function hexToRgb(hex) {
-  console.log(typeof hex);
   const RR = hex[1] + hex[2];
   const GG = hex[3] + hex[4];
   const BB = hex[5] + hex[6];
-  return parseInt(RR, 16), parseInt(GG, 16), parseInt(BB, 16);
+  return `rgb(${parseInt(RR, 16)},${parseInt(GG, 16)},${parseInt(BB, 16)})`;
 }

@@ -139,3 +139,33 @@ always start with grid background color to get increment towards target
 either you know what the background color is or darkening isnt possible
 you always have to set color to bg color -> target color, cant shade a existent color, have to replace it
 }
+
+Color picker submits hex, should it submit rgb
+
+#REFACTOR
+
+addSquares(60, 16);
+addDrawMode();
+adjustNumSquares()
+removeEventListeners()
+addColor()
+Checks if darkening mode
+Checks if Hover mode
+
+clearSquares()
+
+listenForNewNumSquares();
+listenForNewDrawMode();
+
+listenForNewColor();
+listenForRandomColor();
+listenForNewBackgroundColor();
+listenForEraser();
+listenForClear();
+listenForBorderToggle();
+listenForDarkening();
+
+Chose lighten or darken,
+
+constant value that goes from current square color to either white or black
+same value applied to rgb
