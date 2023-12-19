@@ -1,5 +1,5 @@
 let color = "rgb(0,0,0)";
-let drawMode = "Press";
+let drawMode = "Hover";
 let mousedown = false;
 let darkening = false;
 
