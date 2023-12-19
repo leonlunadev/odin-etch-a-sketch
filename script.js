@@ -151,8 +151,7 @@ function listenForNewDrawMode() {
 
 function listenForNewColor() {
   const colorPicker = document.querySelector(".changeColor input");
-  const colorSubmit = document.querySelector(".changeColor button");
-  colorSubmit.addEventListener("click", () => {
+  colorPicker.addEventListener("input", () => {
     color = hexToRgb(colorPicker.value);
   });
 }
@@ -162,7 +161,8 @@ function listenForNewBackgroundColor() {
   const colorSubmit = document.querySelector(".changeBackgroundColor button");
   const grid = document.querySelector(".grid");
   const squares = document.querySelectorAll(".grid div");
-  colorSubmit.addEventListener("click", () => {
+
+  colorPicker.addEventListener("input", () => {
     grid.style.backgroundColor = hexToRgb(colorPicker.value);
     squares.forEach((square) => {
       square.style.backgroundColor = hexToRgb(colorPicker.value);
