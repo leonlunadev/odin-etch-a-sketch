@@ -80,9 +80,10 @@ label {
   align-items: center;
   flex-direction: column;
   width: 300px;
+
   gap: 50px;
 }
 
-.buttons div {
-  width: 100px;
+.buttons button {
+  width: 300px;
 }

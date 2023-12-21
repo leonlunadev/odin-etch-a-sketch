@@ -1,7 +1,14 @@
+//this needs a refactor
+
 let color = "rgb(0,0,0)";
 let drawMode = "Hover";
 let mousedown = false;
 let darkening = false;
+let lighten = false;
+
+let colorMode = "color";
+
+const colorModeOptions = ["color", "darken", "lighten", "rainbow", "eraser"];
 
 addSquares(60, 16);
 addDrawMode();
@@ -220,14 +227,25 @@ function listenForBorderToggle() {
 function listenForDarkening() {
   const darkeningButton = document.querySelector("#darkening");
   darkeningButton.addEventListener("click", (e) => {
-    if (darkening) {
-      darkening = false;
-      darkeningButton.style.backgroundColor = "white";
-    } else {
-      darkeningButton.style.cssText = "background-color: grey;";
-      darkening = true;
-    }
+    toggleDarkening(darkeningButton);
   });
+}
+
+function listenForLighten() {
+  const lightenButton = document.querySelector("#lighten");
+  lightenButton.addEventListener((e) => {});
+}
+
+function toggleLighten(lightenButton) {}
+
+function toggleDarkening(darkeningButton) {
+  if (darkening) {
+    darkening = false;
+    darkeningButton.style.backgroundColor = "white";
+  } else {
+    darkeningButton.style.cssText = "background-color: grey;";
+    darkening = true;
+  }
 }
 
 function hexToRgb(hex) {
