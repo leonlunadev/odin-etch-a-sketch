@@ -174,15 +174,16 @@ function decrementShade(color) {
 }
 
 function getLighterShade(currentColor) {
+  console.log("hello");
   currentColor = currentColor.split(")");
   let strSplit = currentColor[0].split("(");
   let numbers = strSplit[1].split(",");
   let red = Number(numbers[0]);
   let green = Number(numbers[1]);
   let blue = Number(numbers[2]);
-  if (red != 0) red = incrementShade(red);
-  if (blue != 0) blue = incrementShade(blue);
-  if (green != 0) green = incrementShade(green);
+  if (red != 255) red = incrementShade(red);
+  if (blue != 255) blue = incrementShade(blue);
+  if (green != 255) green = incrementShade(green);
   return `rgb(${red},${green},${blue})`;
 }
 
