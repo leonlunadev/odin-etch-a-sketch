@@ -1,9 +1,23 @@
 //this needs a refactor
 
+/*
+ every time you change the color mode
+
+ youre going to have to unhighlight a button
+
+ all the functionality should be handled by the the colorMode variable 
+
+need to move the listeners to the first levvel to make them global
+
+
+
+
+*/
+
 let color = "rgb(0,0,0)";
 let drawMode = "Hover";
 let mousedown = false;
-let darkening = false;
+let darken = false;
 let lighten = false;
 
 let colorMode = "color";
@@ -20,7 +34,7 @@ listenForNewBackgroundColor();
 listenForEraser();
 listenForClear();
 listenForBorderToggle();
-listenForDarkening();
+listenForDarken();
 
 function adjustNumSquares(e) {
   const input = document.querySelector("#numSquares");
@@ -82,34 +96,52 @@ function addDrawMode(mode) {
 }
 
 function addColor(e) {
-  if (!darkening) {
-    if (drawMode == "Hover") {
-      if (color == "random") {
+  if (drawMode == "Hover") {
+    switch (colorMode) {
+      case "color":
+        e.target.style.backgroundColor = color;
+        break;
+      case "darken":
+        let currentColor = e.target.style.backgroundColor;
+        e.target.style.backgroundColor = getDarkerShade(currentColor);
+        break;
+      case "lighten":
+        break;
+      case "random":
         e.target.style.backgroundColor = hexToRgb(
           "#" + Math.floor(Math.random() * 16777215).toString(16)
         );
-      } else {
+        break;
+      case "eraser":
         e.target.style.backgroundColor = color;
-      }
-    } else {
-      if (mousedown) {
-        if (color == "random") {
+        break;
+      default:
+        colorMode = "color";
+        break;
+    }
+  } else {
+    if (mousedown) {
+      switch (colorMode) {
+        case "color":
+          e.target.style.backgroundColor = color;
+          break;
+        case "darken":
+          let currentColor = e.target.style.backgroundColor;
+          e.target.style.backgroundColor = getDarkerShade(currentColor);
+          break;
+        case "lighten":
+          break;
+        case "random":
           e.target.style.backgroundColor = hexToRgb(
             "#" + Math.floor(Math.random() * 16777215).toString(16)
           );
-        } else {
+          break;
+        case "eraser":
           e.target.style.backgroundColor = color;
-        }
-      }
-    }
-  } else {
-    if (drawMode == "Hover") {
-      let currentColor = e.target.style.backgroundColor;
-      e.target.style.backgroundColor = getDarkerShade(currentColor);
-    } else {
-      if (mousedown) {
-        let currentColor = e.target.style.backgroundColor;
-        e.target.style.backgroundColor = getDarkerShade(currentColor);
+          break;
+        default:
+          colorMode = "color";
+          break;
       }
     }
   }
@@ -160,6 +192,7 @@ function listenForNewColor() {
   const colorPicker = document.querySelector(".changeColor input");
   colorPicker.addEventListener("input", () => {
     color = hexToRgb(colorPicker.value);
+    colorMode = "color";
   });
 }
 
@@ -180,8 +213,9 @@ function listenForNewBackgroundColor() {
 function listenForRandomColor() {
   const colorSubmit = document.querySelector("#random");
   colorSubmit.addEventListener("click", () => {
-    darkening = false;
+    darken = false;
     color = "random";
+    colorMode = "random";
   });
 }
 
@@ -190,6 +224,7 @@ function listenForEraser() {
   const backgroundColor = document.querySelector(".grid").style.backgroundColor;
   eraser.addEventListener("click", () => {
     color = backgroundColor;
+    colorMode = "eraser";
   });
 }
 
@@ -224,10 +259,11 @@ function listenForBorderToggle() {
   });
 }
 
-function listenForDarkening() {
-  const darkeningButton = document.querySelector("#darkening");
-  darkeningButton.addEventListener("click", (e) => {
-    toggleDarkening(darkeningButton);
+function listenForDarken() {
+  const darkenButton = document.querySelector("#darken");
+  darkenButton.addEventListener("click", (e) => {
+    toggleDarken(darkenButton);
+    colorMode = "darken";
   });
 }
 
@@ -238,13 +274,13 @@ function listenForLighten() {
 
 function toggleLighten(lightenButton) {}
 
-function toggleDarkening(darkeningButton) {
-  if (darkening) {
-    darkening = false;
-    darkeningButton.style.backgroundColor = "white";
+function toggleDarken(darkenButton) {
+  if (darken) {
+    darken = false;
+    darkenButton.style.backgroundColor = "white";
   } else {
-    darkeningButton.style.cssText = "background-color: grey;";
-    darkening = true;
+    darkenButton.style.cssText = "background-color: grey;";
+    darken = true;
   }
 }
 

@@ -12,6 +12,10 @@ body {
   background-color: pink;
 }
 
+h1 {
+  font-size: 75px;
+}
+
 .sketchPad {
   display: flex;
   justify-content: space-around;
