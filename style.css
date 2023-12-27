@@ -91,3 +91,7 @@ label {
 .buttons button {
   width: 300px;
 }
+
+.highlight {
+  background-color: grey;
+}
