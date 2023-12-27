@@ -174,7 +174,6 @@ function decrementShade(color) {
 }
 
 function getLighterShade(currentColor) {
-  console.log("hello");
   currentColor = currentColor.split(")");
   let strSplit = currentColor[0].split("(");
   let numbers = strSplit[1].split(",");
@@ -260,9 +259,11 @@ function listenForClear() {
 
   clear.addEventListener("click", () => {
     const squares = document.querySelectorAll(".grid div");
+    const grid = document.querySelector(".grid");
+    const gridStyle = getComputedStyle(grid);
+    const backgroundColor = gridStyle.backgroundColor;
+
     squares.forEach((square) => {
-      const backgroundColor =
-        document.querySelector(".grid").style.backgroundColor;
       square.style.backgroundColor = backgroundColor;
     });
   });

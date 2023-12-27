@@ -50,7 +50,7 @@ label {
   flex-wrap: wrap;
   width: 960px;
   height: 960px;
-  background: rgb(255, 255, 255);
+  background-color: rgb(255, 255, 255);
 }
 
 .changeNumSquares {
