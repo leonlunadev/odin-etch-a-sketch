@@ -9,7 +9,11 @@
 
 need to move the listeners to the first levvel to make them global
 
+if color mode buttons are different, unshade the current one and 
+switch color mode to new on and switch current button to new button
 
+if color mode buttons are same unselect that color mode and switch 
+to default color mode of color
 
 
 
@@ -19,12 +23,8 @@ need to move the listeners to the first levvel to make them global
 let color = "rgb(0,0,0)";
 let drawMode = "Hover";
 let mousedown = false;
-let darken = false;
-let lighten = false;
-
 let colorMode = "color";
-
-const colorModeOptions = ["color", "darken", "lighten", "rainbow", "eraser"];
+let currentColorButton;
 
 addSquares(60, 16);
 addDrawMode();
@@ -288,7 +288,6 @@ function listenForBorderToggle() {
 function listenForDarken() {
   const darkenButton = document.querySelector("#darken");
   darkenButton.addEventListener("click", (e) => {
-    toggleDarken(darkenButton);
     colorMode = "darken";
   });
 }
@@ -298,18 +297,6 @@ function listenForLighten() {
   lightenButton.addEventListener("click", (e) => {
     colorMode = "lighten";
   });
-}
-
-function toggleLighten(lightenButton) {}
-
-function toggleDarken(darkenButton) {
-  if (darken) {
-    darken = false;
-    darkenButton.style.backgroundColor = "white";
-  } else {
-    darkenButton.style.cssText = "background-color: grey;";
-    darken = true;
-  }
 }
 
 function hexToRgb(hex) {

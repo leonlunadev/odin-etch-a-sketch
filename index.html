@@ -7,81 +7,50 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-
     <h1><i>SketchPad</i></h1>
-
-
     <div class="sketchPad">
         <div class="left">
-
             <div class="changeNumSquares">
                 <div class="title">
                     <label for="numSquares">Squares per side </label>
                 </div>
                 <div>
                     <input id="numSquares"type="text">
-                    
                 </div>
                 <button id="numSquaresSubmit">Submit</button>
-                
             </div>
-
+            <div class="buttons">
+                <button id="drawMode">Press</button>
+                <button id="border">Remove Border</button>
+                <button id="clear">Clear</button>
+            </div>
             <div class="changeColor">
                 <div class="title">
                     <label for="color">Color</label>
                 </div>
                 <div>
                     <input type="color" />
-               
-                </div>
-                
+                </div> 
             </div>
-
             <div class="changeBackgroundColor">
                 <div class="title">
                     <label for="color">Background Color</label>
                 </div>
                 <div>
-                    <input type="color">
-                   
-                </div>
-                
+                    <input type="color">  
+                </div>    
             </div>
-
             <div class="buttons">
                 <button id="random">Random Color</button>       
-                <button id="drawMode">Press</button>
                 <button id="darken">Darken</button>
                 <button id="lighten">Lighten</button>
                 <button id="eraser">Eraser</button>
-                <button id="border">Remove Border</button>
-                <button id="clear">Clear</button>
-
             </div>
-                
-
-
-
-
-           
         </div>
         <div class="right">
             <div class="grid"></div>
         </div>
-
     </div>
-    
-
-
-
-    
-
-
-
-
-
-
     <script src="script.js"></script>
 </body>
 </html>
