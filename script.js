@@ -1,21 +1,13 @@
 //this needs a refactor
 
 /*
- every time you change the color mode
-
- youre going to have to unhighlight a button
-
- all the functionality should be handled by the the colorMode variable 
-
-need to move the listeners to the first levvel to make them global
+ 
 
 if color mode buttons are different, unshade the current one and 
 switch color mode to new on and switch current button to new button
 
 if color mode buttons are same unselect that color mode and switch 
 to default color mode of color
-
-
 
 
 */
@@ -41,7 +33,7 @@ listenForLighten();
 
 function adjustNumSquares(e) {
   const input = document.querySelector("#numSquares");
-  const newNumSquares = Number(input.value);
+  const newNumSquares = Math.min(Number(input.value), 100);
   input.value = "";
   const newSquareLength = 960 / newNumSquares;
   clearSquares();
