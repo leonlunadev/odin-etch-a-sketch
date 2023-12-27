@@ -12,6 +12,8 @@ need to move the listeners to the first levvel to make them global
 
 
 
+
+
 */
 
 let color = "rgb(0,0,0)";
@@ -35,6 +37,7 @@ listenForEraser();
 listenForClear();
 listenForBorderToggle();
 listenForDarken();
+listenForLighten();
 
 function adjustNumSquares(e) {
   const input = document.querySelector("#numSquares");
@@ -106,6 +109,8 @@ function addColor(e) {
         e.target.style.backgroundColor = getDarkerShade(currentColor);
         break;
       case "lighten":
+        let currColor = e.target.style.backgroundColor;
+        e.target.style.backgroundColor = getLighterShade(currColor);
         break;
       case "random":
         e.target.style.backgroundColor = hexToRgb(
@@ -130,6 +135,8 @@ function addColor(e) {
           e.target.style.backgroundColor = getDarkerShade(currentColor);
           break;
         case "lighten":
+          let currColor = e.target.style.backgroundColor;
+          e.target.style.backgroundColor = getLighterShade(currColor);
           break;
         case "random":
           e.target.style.backgroundColor = hexToRgb(
@@ -154,6 +161,25 @@ function getDarkerShade(currentColor) {
   let red = Number(numbers[0]);
   let green = Number(numbers[1]);
   let blue = Number(numbers[2]);
+  if (red != 0) red = decrementShade(red);
+  if (blue != 0) blue = decrementShade(blue);
+  if (green != 0) green = decrementShade(green);
+  return `rgb(${red},${green},${blue})`;
+}
+
+function decrementShade(color) {
+  color = color - 25;
+  color = Math.max(color, 0);
+  return color;
+}
+
+function getLighterShade(currentColor) {
+  currentColor = currentColor.split(")");
+  let strSplit = currentColor[0].split("(");
+  let numbers = strSplit[1].split(",");
+  let red = Number(numbers[0]);
+  let green = Number(numbers[1]);
+  let blue = Number(numbers[2]);
   if (red != 0) red = incrementShade(red);
   if (blue != 0) blue = incrementShade(blue);
   if (green != 0) green = incrementShade(green);
@@ -161,8 +187,8 @@ function getDarkerShade(currentColor) {
 }
 
 function incrementShade(color) {
-  color = color - 25;
-  color = Math.max(color, 0);
+  color = color + 25;
+  color = Math.min(color, 255);
   return color;
 }
 
@@ -269,7 +295,9 @@ function listenForDarken() {
 
 function listenForLighten() {
   const lightenButton = document.querySelector("#lighten");
-  lightenButton.addEventListener((e) => {});
+  lightenButton.addEventListener("click", (e) => {
+    colorMode = "lighten";
+  });
 }
 
 function toggleLighten(lightenButton) {}
